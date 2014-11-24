@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,6 +31,7 @@ namespace Calendar
             DateTime now = DateTime.Now;
             CurrentMonth.Text = now.ToString("MMMM yyyy");
             DateTime firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
+            DateTime firstDayOfYear = new DateTime(now.Year, 1, 1);
 
             foreach (var item in daysBlocks)
             {
@@ -50,8 +52,8 @@ namespace Calendar
             foreach (var item in weeksBlocks)
             {
                 item.TextBlock.Tag = item.Index;
-                var weekNumber = item.Index.ToString();
-                item.TextBlock.Text = weekNumber;
+                var weekNumber = ((firstDayOfMonth.DayOfYear - (int)firstDayOfYear.DayOfWeek) / 7 + item.Index + 1) % 52 + 1;
+                item.TextBlock.Text = weekNumber.ToString();
             }
 
             //Sorry, little circle.
