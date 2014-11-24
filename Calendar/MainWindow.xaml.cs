@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,14 +22,20 @@ namespace Calendar
 
         private void InitializeBehaviour()
         {
+            //TODO: get rid of magic dateString
+            var dateString = "25.12.2013";
             //TODO: refactor all the mess below!
             var daysBlocks = Enumerable.Range(0, VisualTreeHelper.GetChildrenCount(Grid))
                                         .Select(index => VisualTreeHelper.GetChild(Grid, index) as TextBlock)
                                         .Where(item => item != null && item.Text == "0")
                                         .Select((item, index) => new {TextBlock = item, Index = index});
 
+            DateTime now;
+            if (dateString != null)
+                now = DateTime.ParseExact(dateString, "dd.mm.yyyy", CultureInfo.InvariantCulture);
+            else
+                now = DateTime.Now;
 
-            DateTime now = DateTime.Now;
             CurrentMonth.Text = now.ToString("MMMM yyyy");
             DateTime firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
             DateTime firstDayOfYear = new DateTime(now.Year, 1, 1);
@@ -52,7 +59,8 @@ namespace Calendar
             foreach (var item in weeksBlocks)
             {
                 item.TextBlock.Tag = item.Index;
-                var weekNumber = ((firstDayOfMonth.DayOfYear - (int)firstDayOfYear.DayOfWeek) / 7 + item.Index + 1) % 52 + 1;
+                item.TextBlock.FontStyle = FontStyles.Italic;
+                var weekNumber = ((firstDayOfMonth.DayOfYear - (int)firstDayOfYear.DayOfWeek) / 7 + item.Index) % 52 + 1;
                 item.TextBlock.Text = weekNumber.ToString();
             }
 
