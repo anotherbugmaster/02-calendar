@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 
@@ -18,9 +19,15 @@ namespace Calendar
 
         private void InitializeBehaviour()
         {
-
+            var datesBlocks = Enumerable.Range(0, VisualTreeHelper.GetChildrenCount(Grid))
+                                        .Select(index => VisualTreeHelper.GetChild(Grid, index) as TextBlock)
+                                        .Where(item => item != null && item.Text!="Current month")
+                                        .Select((item, index) => new {TextBlock = item, Index = index});
+            foreach (var item in datesBlocks)
+            {
+                item.TextBlock.Tag = item.Index;
+                item.TextBlock.Text = (item.Index + 1).ToString();
+            }
         }
-
-
     }
 }
