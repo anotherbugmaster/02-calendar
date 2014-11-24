@@ -21,7 +21,7 @@ namespace Calendar
         {
             var datesBlocks = Enumerable.Range(0, VisualTreeHelper.GetChildrenCount(Grid))
                                         .Select(index => VisualTreeHelper.GetChild(Grid, index) as TextBlock)
-                                        .Where(item => item != null && item.Text!="Current month")
+                                        .Where(item => item != null && item.Text == "0")
                                         .Select((item, index) => new {TextBlock = item, Index = index});
             foreach (var item in datesBlocks)
             {
