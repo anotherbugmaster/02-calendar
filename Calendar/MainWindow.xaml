@@ -4,7 +4,7 @@
         Title="MainWindow"
         Height="630.181"
         Width="880.609"
-        MinHeight="500"
+        MinHeight="600"
         MinWidth="800"
         Background="#f2f2f2"
         FontFamily="Arial"
