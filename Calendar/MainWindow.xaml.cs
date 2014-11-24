@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -28,6 +29,8 @@ namespace Calendar
                 item.TextBlock.Tag = item.Index;
                 item.TextBlock.Text = (item.Index + 1).ToString();
             }
+            DateTime date = DateTime.Now;
+            CurrentMonth.Text = date.ToString("MMMM yyyy");
         }
     }
 }

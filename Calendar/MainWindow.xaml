@@ -39,7 +39,8 @@
                    Grid.Row="0"
                    Grid.Column="0"
                    Foreground="#989898"
-                   Grid.ColumnSpan="8"/>
+                   Grid.ColumnSpan="8"
+                   Name="CurrentMonth"/>
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Text="#" FontSize="25"/>
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Text="MON" FontSize="20"/>
