@@ -25,7 +25,7 @@ namespace Calendar
             string[] args = Environment.GetCommandLineArgs();
             var time = new DateTime();
             if (args.Length > 1)
-                time = DateTime.ParseExact(args[1], "dd.mm.yyyy", CultureInfo.InvariantCulture);
+                time = DateTime.ParseExact(args[1], "dd.MM.yyyy", CultureInfo.InvariantCulture);
             else
                 time = DateTime.Now;
             //TODO: refactor all the mess below!
