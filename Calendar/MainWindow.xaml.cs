@@ -25,7 +25,7 @@ namespace Calendar
             string[] args = Environment.GetCommandLineArgs();
             var time = new DateTime();
             if (args.Length > 1)
-                time = DateTime.ParseExact(args[1], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                time = DateTime.ParseExact(args[1], "dd.MM.yyyy", CultureInfo.CurrentCulture);
             else
                 time = DateTime.Now;
             //TODO: refactor all the mess below!
@@ -43,9 +43,9 @@ namespace Calendar
                 item.TextBlock.Tag = item.Index;
                 var dayNumber = "";
                 //TODO: fix magic constants!
-                if (item.Index > (int)firstDayOfMonth.DayOfWeek - 2 && 
-                    item.Index <= DateTime.DaysInMonth(time.Year, time.Month) + (int)firstDayOfMonth.DayOfWeek - 2)
-                    dayNumber = (item.Index - (int)firstDayOfMonth.DayOfWeek + 2).ToString();
+                if (item.Index > GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) - 1 && 
+                    item.Index <= DateTime.DaysInMonth(time.Year, time.Month) + GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) - 1)
+                    dayNumber = (item.Index - GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) + 1).ToString();
                 item.TextBlock.Text = dayNumber;
             }
 
@@ -58,15 +58,20 @@ namespace Calendar
             {
                 item.TextBlock.Tag = item.Index;
                 item.TextBlock.FontStyle = FontStyles.Italic;
-                var weekNumber = ((firstDayOfMonth.DayOfYear - (int)firstDayOfYear.DayOfWeek) / 7 + item.Index) % 52 + 1;
+                var weekNumber = ((firstDayOfMonth.DayOfYear - GetRusDayOfWeek(firstDayOfYear.DayOfWeek)) / 7 + item.Index) % 52 + 1;
                 item.TextBlock.Text = weekNumber.ToString();
             }
 
             //Sorry, little circle.
-            Grid.SetRow(UglyCircle, (time.Day + (int)firstDayOfMonth.DayOfWeek) / 7 + 2);
-            Grid.SetColumn(UglyCircle, (int)time.DayOfWeek);
+            Grid.SetRow(UglyCircle, (GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) + time.Day - 1) / 7 + 2);
+            Grid.SetColumn(UglyCircle, GetRusDayOfWeek(time.DayOfWeek) + 1);
 
             Grid.SetZIndex(UglyCircle, 0);
+        }
+
+        private int GetRusDayOfWeek(DayOfWeek day)
+        {
+            return (7 + (int) day - 1) % 7;
         }
     }
 }
