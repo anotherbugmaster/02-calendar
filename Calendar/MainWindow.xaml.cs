@@ -46,16 +46,9 @@ namespace Calendar
                                         .Where(item => item != null && item.Text == "0")
                                         .Select((item, index) => new { TextBlock = item, Index = index });
 
-
-            foreach (var item in daysBlocks)
+            foreach (var block in daysBlocks)
             {
-                item.TextBlock.Tag = item.Index;
-                var dayNumber = "";
-                //TODO: fix magic constants!
-                if (item.Index > GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) - 1 &&
-                    item.Index <= DateTime.DaysInMonth(time.Year, time.Month) + GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) - 1)
-                    dayNumber = (item.Index - GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) + 1).ToString();
-                item.TextBlock.Text = dayNumber;
+                block.TextBlock.Text = SetDateBlockText(block.Index, firstDayOfMonth, time);
             }
         }
 
@@ -68,7 +61,6 @@ namespace Calendar
 
             foreach (var item in weeksBlocks)
             {
-                item.TextBlock.Tag = item.Index;
                 item.TextBlock.FontStyle = FontStyles.Italic;
                 var weekNumber = ((firstDayOfMonth.DayOfYear - GetRusDayOfWeek(firstDayOfYear.DayOfWeek)) / 7 + item.Index) % 52 + 1;
                 item.TextBlock.Text = weekNumber.ToString();
@@ -89,7 +81,6 @@ namespace Calendar
 
         private DateTime ParseConsoleDate()
         {
-
             string[] args = Environment.GetCommandLineArgs();
             var time = new DateTime();
             if (args.Length > 1)
@@ -97,6 +88,16 @@ namespace Calendar
             else
                 time = DateTime.Now;
             return time;
+        }
+
+        private string SetDateBlockText(int dateBlockIndex, DateTime firstDayOfMonth, DateTime time)
+        {
+            var dayNumber = "";
+
+            if (dateBlockIndex > GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) - 1 &&
+                dateBlockIndex <= DateTime.DaysInMonth(time.Year, time.Month) + GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) - 1)
+                dayNumber = (dateBlockIndex - GetRusDayOfWeek(firstDayOfMonth.DayOfWeek) + 1).ToString();
+            return dayNumber;
         }
     }
 }
